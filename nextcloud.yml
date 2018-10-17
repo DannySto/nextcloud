@@ -1,0 +1,27 @@
+---
+- hosts: pihol
+  become: yes
+  tasks:
+#  - name: Include update playbook
+#    include: ../update.yml
+    
+#  - name: Include reboot playbook
+ #   include: ../reboot.yml  - name: Install the package "apache2"
+  #  apt: 
+   #     name: apache2
+    #    state: present
+        
+#  - name: Include php7
+#    include: php7.yml
+ 
+  #  - name: Install the package "ntfs-3g"
+   #   apt: 
+  #      name: ntfs-3g
+  #      state: present
+    
+  - name: Include reboot playbook
+    include: ../reboot.yml
+ 
+  - name: Include nextcloud-package playbook
+    include: nextcloud-package.yml 
+    

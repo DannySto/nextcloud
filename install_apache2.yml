@@ -1,0 +1,68 @@
+---
+- hosts: pihole
+  name: refresh inventory
+  become: yes
+#  remote_user: pi
+  tasks:
+
+# do an "apt-get update", to ensure latest package lists
+  - name: apt-get update
+    apt:
+        update-cache: yes
+        update_cache: yes
+        cache_valid_time: 86400 #One day
+      
+  - name: apt-get upgrade
+    apt:
+        upgrade: yes
+        update_cache: yes
+        cache_valid_time: 86400 #One day
+        
+  - name: Install the package "apache2"
+    apt: 
+        name: apache2
+        state: present
+  - name: Install the package "php7.0"
+    apt: 
+        name: php7.0
+        state: present        
+  - name: Install the package "php7.0-gd"
+    apt: 
+        name: php7.0-gd
+        state: present       
+  - name: Install the package "sqlite"
+    apt: 
+        name: sqlite
+        state: present 
+  - name: Install the package "sqlite"
+    apt: 
+        name: sqlite
+        state: present
+  - name: Install the package "php7.0-sqlite3"
+    apt: 
+        name: php7.0-sqlite3
+        state: present
+  - name: Install the package "php7.0-curl"
+    apt: 
+        name: php7.0-curl
+        state: present
+  - name: Install the package "php7.0-zip"
+    apt: 
+        name: php7.0-zip
+        state: present
+  - name: Install the package "php7.0-xml"
+    apt: 
+        name: php7.0-xml
+        state: present
+  - name: Install the package "php7.0-mbstring"
+    apt: 
+        name: php7.0-mbstring
+        state: present      
+  - name: restart server 
+    shell: sleep 2 && /sbin/shutdown -r +1 'Reboot by Ansible deployment'
+    async: 1
+    poll: 0
+  - name: waiting 360 secs for server to come back
+    wait_for_connection:
+        delay: 15
+        timeout: 360d

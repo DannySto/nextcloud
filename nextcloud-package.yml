@@ -1,0 +1,31 @@
+---
+   
+   - name: Check if path exists
+     stat: path=/var/www/deadfishcloud.tk/public_html
+     register: check_path
+     
+   - name: Download and unarchive nextcloud
+     unarchive:
+        src: https://download.nextcloud.com/server/releases/nextcloud-14.0.3.tar.bz2
+        dest: /var/www/deadfishcloud.tk
+        remote_src: yes
+  #      when: check_path.stat.exists == false
+        
+   - name: Move nextcloud to public_html
+     command: mv /var/www/deadfishcloud.tk/nextcloud /var/www/deadfishcloud.tk/public_html
+     when: check_path.stat.exists == false
+      
+   - file:
+         path: /var/www/deadfishcloud.tk/public_html
+         state: directory
+         mode: 0755
+         owner: www-data
+         group: www-data        
+         recurse: yes
+   - file:
+         path: /home/pi/nextcloud/data
+         state: directory
+         mode: 0750
+         owner: www-data
+         group: www-data 
+         recurse: yes
